@@ -7,29 +7,33 @@ class RegisterController {
     try {
       const emailExist = await User.findOne({ where: { email } });
       if (emailExist) {
-        res.status(400).json({ message: "Email já existe" });
+        return res.status(400).json({ message: "Email já existe" });
       }
 
       const loginExist = await User.findOne({ where: { login } });
       if (loginExist) {
-        res.status(400).json({ message: "Login já existe" });
+        return res.status(400).json({ message: "Login já existe" });
       }
 
-      if (password != confirmationPassword) {
-        res.status(400).json({ message: "As senhas não batem" });
+      if (password !== confirmationPassword) {
+        return res.status(400).json({ message: "As senhas não batem" });
       }
+
+
       const hashedPassword = await bcrypt.hash(password, 10);
 
+     
       const newUser = await User.create({
         email,
         login,
         password: hashedPassword,
       });
 
-      res.status(201).json({ message: "Usuário criado com sucesso", newUser });
+    
+      return res.status(201).json({ message: "Usuário criado com sucesso", newUser });
     } catch (error) {
       console.error("Erro ao registrar o usuário: ", error);
-      res.status(500).json({ message: "Erro interno do servidor" });
+      return res.status(500).json({ message: "Erro interno do servidor" });
     }
   }
 }

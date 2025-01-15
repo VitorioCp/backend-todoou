@@ -9,15 +9,17 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
     port: process.env.DB_PORT,
+    // Configurações de SSL (comentadas)
+    /*
     dialectOptions: {
       ssl: {
         require: true,
         rejectUnauthorized: false,
       },
     },
+    */
     logging: false, 
-  
-    }
+  }
 );
 
 sequelize
@@ -37,7 +39,7 @@ const syncDatabase = async () => {
     console.error("Erro ao sincronizar o banco de dados:", error);
   }
 };
-  
+
 syncDatabase();
 
 module.exports = sequelize;

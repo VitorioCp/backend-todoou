@@ -17,7 +17,7 @@ router.post("/task", authMiddleware, (req, res) =>
   taskController.create(req, res)
 );
 
-router.get("/task", (req, res) => taskController.getAll(req, res));
+router.get("/task/:userId", (req, res) => taskController.getAll(req, res));
 
 router.get("/task/:id", (req, res) => taskController.getOne(req, res));
 
@@ -28,6 +28,8 @@ router.put("/task/:id", authMiddleware, (req, res) =>
 router.delete("/task/:id", authMiddleware, (req, res) =>
   taskController.delete(req, res)
 );
+
+//GorupTasks
 
 const groupTasksController = new GroupTasksController();
 router.post("/grouptasks", authMiddleware, (req, res) =>

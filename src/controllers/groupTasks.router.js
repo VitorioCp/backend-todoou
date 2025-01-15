@@ -3,9 +3,10 @@ const GroupTasks = require("../models/GroupTasks");
 class GroupTasksController {
   async create(req, res) {
     const { groupTitle } = req.body;
+    const userId = req.user.id_user;
 
     try {
-      const response = await GroupTasks.create({ groupTitle });
+      const response = await GroupTasks.create({ groupTitle, userId });
 
       res
         .status(201)
@@ -40,16 +41,24 @@ class GroupTasksController {
     }
   }
 
+  //Buscar os grouptasks por userId
   async getAll(req, res) {
     try {
-      const response = await GroupTasks.findAll();
-      res.status(200).json(response);
+      // O middleware authMiddleware adiciona o userId ao req.user
+      const userId = req.user.id_user; // Pega o userId do token decodificado
+  
+      // Filtra os GroupTasks pelo userId
+      const groupTasks = await GroupTasks.findAll({
+        where: { userId: userId }, // Retorna apenas os GroupTasks do usuário autenticado
+      });
+  
+      res.status(200).json(groupTasks);
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Erro ao tentar recuperar dados do servidor", error });
+      console.error(error);
+      res.status(500).json({ error: "Erro ao buscar os GroupTasks" });
     }
   }
+  
 
   async delete(req, res) {
     const { id } = req.params;

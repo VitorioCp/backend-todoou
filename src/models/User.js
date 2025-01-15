@@ -4,6 +4,12 @@ const sequelize = require("./connection");
 const User = sequelize.define(
   "User",
   {
+    id_user: {
+      type: DataTypes.INTEGER, // Define o tipo como INTEGER
+      unique: true,
+      primaryKey: true,
+      autoIncrement: true, // Faz o ID ser auto-incrementado
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -21,7 +27,7 @@ const User = sequelize.define(
   },
   {
     tableName: "Users",
-    timestamps: true,  
+    timestamps: true,
   }
 );
 
